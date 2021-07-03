@@ -35,6 +35,7 @@ router.get('/auth/bungie/callback', passport.authenticate('bungie-auth', {
     bungiereq.on('error', error => {
       console.error(error)
     })
+    bungiereq.end();
   });
 
 module.exports = router;
