@@ -19,7 +19,7 @@ router.get('/auth/bungie/callback', passport.authenticate('bungie-auth', {
   failureRedirect: '/auth/provide' }), function(req, res) {
     // Successful authentication, redirect home.
     https.get({
-      hostname: 'https://www.bungie.net/Platform/Destiny2/User/GetBungieNetUserById/' + req.session.passport.user.membershipId,
+      hostname: 'https://www.bungie.net/Platform/User/GetMembershipsById/' + req.session.passport.user.membershipId + '/2/',
       headers: {
         "X-API-Key": '2f2c53a675ac4c56a55f893a026ee040'
       }
