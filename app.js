@@ -37,7 +37,7 @@ passport.use('bungie-auth', new OAuth2Strategy({
 },
 function(accessToken, refreshToken, membershipId, done) {
   console.log(accessToken, refreshToken, membershipId);
-  done({}, membershipId);
+  done(null, accessToken);
 }
 ));
 
