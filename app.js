@@ -3,8 +3,6 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-var passport = require('passport');
-var BungieOAuth2Strategy = require('passport-bungie-oauth2');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
@@ -28,26 +26,6 @@ app.use('/users', usersRouter);
 app.use(function(req, res, next) {
   next(createError(404));
 });
-
-passport.use(new BungieOAuth2Strategy({
-  clientID: 37015,
-  callbackURL: "http://localhost:3000/auth/dropbox-oauth2/callback"
-},
-function(accessToken, refreshToken, profile, done) {
-  User.findOrCreate({ membershipId: profile.membershipId }, function (err, user) {
-    return done(err, user);
-  });
-}
-));
-
-app.get('/auth/bungie', passport.authenticate('bungie-oauth2'));
-
-app.get('/auth/bungie/callback', 
-  passport.authenticate('bungie-oauth2', { failureRedirect: '/login' }),
-  function(req, res) {
-    // Successful authentication, redirect home.
-    res.redirect('/');
-  });
 
 // error handler
 app.use(function(err, req, res, next) {
