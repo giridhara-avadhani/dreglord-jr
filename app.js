@@ -14,6 +14,19 @@ var app = express();
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
+passport.use('bungie-auth', new OAuth2Strategy({
+  authorizationURL: 'https://www.bungie.net/en/OAuth/Authorize',
+  tokenURL: 'https://www.bungie.net/platform/app/oauth/token/',
+  clientID: '37015',
+  clientSecret: 'hESrkryUz2h9gq5MGwqxlinCReUouFiKcVkPWFjc-5w',
+  callbackURL: 'https://dreglord-jr.herokuapp.com/auth/bungie/callback'
+},
+function(accessToken, refreshToken, membershipId, done) {
+  console.log(accessToken, refreshToken, membershipId);
+  done(null, refreshToken);
+}
+));
+
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -28,18 +41,6 @@ app.use(function(req, res, next) {
   next(createError(404));
 });
 
-passport.use('bungie-auth', new OAuth2Strategy({
-  authorizationURL: 'https://www.bungie.net/en/OAuth/Authorize',
-  tokenURL: 'https://www.bungie.net/platform/app/oauth/token/',
-  clientID: '37015',
-  clientSecret: 'hESrkryUz2h9gq5MGwqxlinCReUouFiKcVkPWFjc-5w',
-  callbackURL: 'https://dreglord-jr.herokuapp.com/auth/bungie/callback'
-},
-function(accessToken, refreshToken, membershipId, done) {
-  console.log(accessToken, refreshToken, membershipId);
-  done(null, accessToken);
-}
-));
 
 // error handler
 app.use(function(err, req, res, next) {
