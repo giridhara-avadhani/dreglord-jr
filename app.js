@@ -54,11 +54,4 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
-app.get('/auth/bungie', passport.authenticate('bungie-auth', { scope: 'code' }));
-app.get('/auth/bungie/callback', passport.authenticate('provider', {
-  failureRedirect: '/auth/provider' }, function(req, res) {
-    // Successful authentication, redirect home.
-    res.redirect('/');
-  }));
-
 module.exports = app;
