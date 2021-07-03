@@ -12,6 +12,6 @@ router.get('/auth/bungie/callback', passport.authenticate('bungie-auth', {
   failureRedirect: '/auth/provider' }), function(req, res) {
     // Successful authentication, redirect home.
     res.redirect('/');
-  }));
+  });
 
 module.exports = router;
