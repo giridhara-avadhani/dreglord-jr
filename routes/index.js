@@ -27,12 +27,12 @@ router.get('/auth/bungie/callback', passport.authenticate('bungie-auth', {
         "X-API-Key": '2f2c53a675ac4c56a55f893a026ee040'
       }
     }
-    const req = https.request(options, function (response) {
+    const bungiereq = https.request(options, function (response) {
       response.on('data', (body) => {
         res.render('index', { title: 'Express',  user: JSON.stringify(body)});
       })
     })
-    req.on('error', error => {
+    bungiereq.on('error', error => {
       console.error(error)
     })
   });
