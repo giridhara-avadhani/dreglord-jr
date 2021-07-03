@@ -27,7 +27,8 @@ function(accessToken, refreshToken, profile, done) {
   done(null, profile);
 }
 ));
-
+app.use(passport.initialize());
+app.use(passport.session());
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
