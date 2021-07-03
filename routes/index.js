@@ -8,7 +8,7 @@ router.get('/', function(req, res, next) {
 });
 
 router.get('/auth/bungie', passport.authenticate('bungie-auth'));
-router.get('/auth/bungie/callback', passport.authenticate('provider', {
+router.get('/auth/bungie/callback', passport.authenticate('bungie-auth', {
   failureRedirect: '/auth/provider' }, function(req, res) {
     // Successful authentication, redirect home.
     res.redirect('/');
