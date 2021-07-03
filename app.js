@@ -36,10 +36,8 @@ passport.use('bungie-auth', new OAuth2Strategy({
   callbackURL: 'https://dreglord-jr.herokuapp.com/auth/bungie/callback'
 },
 function(accessToken, refreshToken, profile, done) {
-  User.findOrCreate(...profile, function(err, user) {
-    console.log(user);
-    done(err, user);
-  });
+  console.log(profile);
+  done();
 }
 ));
 
