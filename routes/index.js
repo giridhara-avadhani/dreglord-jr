@@ -28,9 +28,18 @@ router.get('/auth/bungie/callback', passport.authenticate('bungie-auth', {
       }
     }
     const bungiereq = https.request(options, function (response) {
-      response.on('data', (body) => {
-        res.render('index', { title: 'Express',  user: JSON.stringify(body)});
-      })
+      var body = [];
+      response.on('data', function(chunk) {
+          body.push(chunk);
+      });
+      response.on('end', function() {
+          try {
+              body = JSON.parse(Buffer.concat(body).toString());
+          } catch(e) {
+              reject(e);
+          }
+          res.render('index', { title: 'Express',  user: JSON.stringify(body)});
+      });
     })
     bungiereq.on('error', error => {
       console.error(error)
