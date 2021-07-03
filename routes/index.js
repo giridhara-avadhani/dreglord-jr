@@ -9,6 +9,7 @@ router.get('/', function(req, res, next) {
   if (!req.session || !req.session.passport || !req.session.passport.user  || !req.session.passport.user.membershipId) {
     res.render('index', { title: 'Express',  user: user });
   } else {
+    console.log(req.session);
     https.get({
       hostname: 'https://www.bungie.net/Platform/Destiny2/User/GetBungieNetUserById/' + req.session.passport.user.membershipId,
       headers: {
