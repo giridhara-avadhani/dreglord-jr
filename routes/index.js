@@ -10,6 +10,14 @@ router.get('/', function(req, res, next) {
   if (!req.session || !req.session.passport || !req.session.passport.user  || !req.session.passport.user.membershipId) {
     res.render('index', { title: 'Express',  user: user });
   } else {
+    
+  }
+});
+
+router.get('/auth/bungie', passport.authenticate('bungie-auth'));
+router.get('/auth/bungie/callback', passport.authenticate('bungie-auth', {
+  failureRedirect: '/auth/provide' }), function(req, res) {
+    // Successful authentication, redirect home.
     https.get({
       hostname: 'https://www.bungie.net/Platform/Destiny2/User/GetBungieNetUserById/' + req.session.passport.user.membershipId,
       headers: {
@@ -21,14 +29,6 @@ router.get('/', function(req, res, next) {
             console.log(body) // Print the google web page.
         }
     })
-  }
-});
-
-router.get('/auth/bungie', passport.authenticate('bungie-auth'));
-router.get('/auth/bungie/callback', passport.authenticate('bungie-auth', {
-  failureRedirect: '/auth/provide' }), function(req, res) {
-    // Successful authentication, redirect home.
-    res.redirect('/');
   });
 
 module.exports = router;
