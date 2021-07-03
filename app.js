@@ -6,7 +6,8 @@ var logger = require('morgan');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
-
+var passport = require('passport');
+var OAuth2Strategy = require('passport-oauth').OAuth2Strategy;
 var app = express();
 
 // view engine setup
@@ -27,6 +28,21 @@ app.use(function(req, res, next) {
   next(createError(404));
 });
 
+passport.use('bungie-auth', new OAuth2Strategy({
+  authorizationURL: 'https://www.bungie.net/en/OAuth/Authorize',
+  tokenURL: 'https://www.bungie.net/platform/app/oauth/token/',
+  clientID: '37015',
+  clientSecret: 'hESrkryUz2h9gq5MGwqxlinCReUouFiKcVkPWFjc-5w',
+  callbackURL: 'https://dreglord-jr.herokuapp.com/auth/bungie/callback'
+},
+function(accessToken, refreshToken, profile, done) {
+  User.findOrCreate(...profile, function(err, user) {
+    console.log(user);
+    done(err, user);
+  });
+}
+));
+
 // error handler
 app.use(function(err, req, res, next) {
   // set locals, only providing error in development
@@ -37,5 +53,12 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
+
+app.get('/auth/bungie', passport.authenticate('bungie-auth', { scope: 'code' }));
+app.get('/auth/bungie/callback', passport.authenticate('provider', {
+  failureRedirect: '/auth/provider' }, function(req, res) {
+    // Successful authentication, redirect home.
+    res.redirect('/');
+  }));
 
 module.exports = app;
