@@ -27,8 +27,16 @@ function(accessToken, refreshToken, profile, done) {
   done(null, profile);
 }
 ));
+passport.serializeUser(function(user, done) {
+  done(null, user);
+});
+
+passport.deserializeUser(function(user, done) {
+  done(null, user);
+});
 app.use(passport.initialize());
 app.use(passport.session());
+
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
