@@ -15,7 +15,7 @@ var app = express();
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
-passport.use('bungie-auth', new OAuth2Strategy({
+passport.use('bungie-auth', new bungieOAuth2({
   authorizationURL: 'https://www.bungie.net/en/OAuth/Authorize',
   tokenURL: 'https://www.bungie.net/platform/app/oauth/token/',
   clientID: '37015',
